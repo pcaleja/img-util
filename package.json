@@ -1,11 +1,19 @@
 {
-  "name": "image-resize",
-  "version": "1.0.0",
-  "description": "Image resizing CLI ",
+  "name": "img-util",
+  "version": "0.0.1",
+  "description": "Image Utility CLI ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Philip Caleja",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "del": "^2.2.2",
+    "sharp": "^0.16.0"
+  },
+  "bin": {
+    "img-util": "index.js"
+  }
 }
