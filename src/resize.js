@@ -12,13 +12,15 @@ const Resize = {
 
   checkOptions() {
     if (Resize.options.background &&
-        Resize.options.half) {
+        Resize.options.half &&
+        Resize.options.width) {
       console.error('use only one option');
       return;
     }
 
     if (typeof Resize.options.background === 'undefined' &&
-        typeof Resize.options.half === 'undefined') {
+        typeof Resize.options.half === 'undefined' &&
+        typeof Resize.options.width === 'undefined') {
       console.error('select an option');
       return;
     }
@@ -77,9 +79,14 @@ const Resize = {
     Resize.setImageParams('50%', image);
   },
 
+  formatForWidth(image) {
+    Resize.setImageParams(Number(Resize.options.width), image);
+  },
+
   formatConditions(image) {
     if (Resize.options.background) Resize.formatForBackground(image);
     if (Resize.options.half) Resize.formatForHalf(image);
+    if (Resize.options.width) Resize.formatForWidth(image);
   },
 
   loopImages() {
@@ -109,6 +116,7 @@ const resize = {
       .command('resize [dir]')
       .option('-b, --background', 'output full width background images')
       .option('-h, --half','output 1x and 2x images')
+      .option('-w, --width [width]', 'output defined width images')
       .action(Resize.init);
   }
 }
