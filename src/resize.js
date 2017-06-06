@@ -12,25 +12,27 @@ const Resize = {
 
   checkOptions() {
     if (Resize.options.background &&
-        Resize.options.half &&
-        Resize.options.width) {
+        Resize.options.divide &&
+        Resize.options.width &&
+        Resize.options.height) {
       console.error('use only one option');
       return;
     }
 
     if (typeof Resize.options.background === 'undefined' &&
-        typeof Resize.options.half === 'undefined' &&
-        typeof Resize.options.width === 'undefined') {
+        typeof Resize.options.divide === 'undefined' &&
+        typeof Resize.options.width === 'undefined' &&
+        typeof Resize.options.height === 'undefined') {
       console.error('select an option');
       return;
     }
   },
 
-  getImageWidth(width, metadata) {
-    switch(width) {
-      case '100%': return metadata.width;
-      case '50%': return metadata.width / 2;
-      default: return width;
+  getImageSize(size, metadata) {
+    switch(size) {
+      case '100%': return metadata.size;
+      case '50%': return metadata.size / 2;
+      default: return size;
     }
   },
 
@@ -39,13 +41,13 @@ const Resize = {
     Resize.directory = dir ? process.cwd() + dir : process.cwd();
     Resize.files = fs.readdirSync(Resize.directory);
     Resize.images = Resize.files.filter(function(val) {
-      if (val.includes('.png') || val.includes('.jpg')) {
+      if (val.includes('.png') || val.includes('.jpg') || val.includes('.jpeg')) {
         return val;
       }
     });
   },
 
-  setImageParams(width, image, suffix) {
+  setImageParams(size, image, suffix) {
     var suffix = suffix || '';
     const imageArray = image.split('.');
     const imageName = imageArray[0];
@@ -57,8 +59,10 @@ const Resize = {
     imageFile
       .metadata()
       .then(function(metadata) {
+        const width = Resize.options.width ? Resize.getImageSize(size, metadata) : size;
+        const height = Resize.options.height ? Resize.getImageSize(size, metadata) : null;
         return imageFile
-          .resize(Resize.getImageWidth(width, metadata))
+          .resize(width, height)
           .toFile(imageOutput);
       })
   },
@@ -74,7 +78,7 @@ const Resize = {
     Resize.setImageParams(1440, image);
   },
 
-  formatForHalf(image) {
+  formatForDivide(image) {
     Resize.setImageParams('100%', image, '@2x');
     Resize.setImageParams('50%', image);
   },
@@ -83,10 +87,15 @@ const Resize = {
     Resize.setImageParams(Number(Resize.options.width), image);
   },
 
+  formatForHeight(image) {
+    Resize.setImageParams(Number(Resize.options.height), image);
+  },
+
   formatConditions(image) {
     if (Resize.options.background) Resize.formatForBackground(image);
-    if (Resize.options.half) Resize.formatForHalf(image);
+    if (Resize.options.divide) Resize.formatForDivide(image);
     if (Resize.options.width) Resize.formatForWidth(image);
+    if (Resize.options.height) Resize.formatForHeight(image);
   },
 
   loopImages() {
@@ -115,8 +124,9 @@ const resize = {
     program
       .command('resize [dir]')
       .option('-b, --background', 'output full width background images')
-      .option('-h, --half','output 1x and 2x images')
+      .option('-d, --divide','output 1x and 2x images')
       .option('-w, --width [width]', 'output defined width images')
+      .option('-h, --height [height]', 'output defined height images')
       .action(Resize.init);
   }
 }

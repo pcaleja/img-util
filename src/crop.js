@@ -13,7 +13,7 @@ const Crop = {
     Crop.directory = dir ? process.cwd() + dir : process.cwd();
     Crop.files = fs.readdirSync(Crop.directory);
     Crop.images = Crop.files.filter(function(val) {
-      if (val.includes('.png') || val.includes('.jpg')) {
+      if (val.includes('.png') || val.includes('.jpg') || val.includes('.jpeg')) {
         return val;
       }
     });
@@ -30,7 +30,7 @@ const Crop = {
       .metadata()
       .then(function(metadata) {
         return imageFile
-          .resize(1538, 1025)
+          .resize(900, 640)
           .crop()
           .toFile(imageOutput)
       })
