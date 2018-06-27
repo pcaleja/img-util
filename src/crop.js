@@ -30,7 +30,7 @@ const Crop = {
       .metadata()
       .then(function(metadata) {
         return imageFile
-          .resize(900, 640)
+          .resize(800, 530)
           .crop()
           .toFile(imageOutput)
       })

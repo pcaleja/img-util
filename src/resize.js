@@ -30,8 +30,8 @@ const Resize = {
 
   getImageSize(size, metadata) {
     switch(size) {
-      case '100%': return metadata.size;
-      case '50%': return metadata.size / 2;
+      case '100%': return metadata.width;
+      case '50%': return metadata.width / 2;
       default: return size;
     }
   },
@@ -59,7 +59,7 @@ const Resize = {
     imageFile
       .metadata()
       .then(function(metadata) {
-        const width = Resize.options.width ? Resize.getImageSize(size, metadata) : size;
+        const width = Resize.options.divide ? Resize.getImageSize(size, metadata) : size;
         const height = Resize.options.height ? Resize.getImageSize(size, metadata) : null;
         return imageFile
           .resize(width, height)
