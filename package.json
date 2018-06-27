@@ -1,7 +1,7 @@
 {
   "name": "img-util",
   "version": "0.0.1",
-  "description": "Image Utility CLI ",
+  "description": "Image Utility CLI",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,9 +9,9 @@
   "author": "Philip Caleja",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.9.0",
+    "commander": "^2.15.1",
     "del": "^2.2.2",
-    "sharp": "^0.16.0"
+    "sharp": "^0.16.2"
   },
   "bin": {
     "img-util": "index.js"
